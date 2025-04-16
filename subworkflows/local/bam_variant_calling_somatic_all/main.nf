@@ -56,6 +56,7 @@ workflow BAM_VARIANT_CALLING_SOMATIC_ALL {
     vcf_muse            = Channel.empty()
     vcf_mutect2         = Channel.empty()
     vcf_strelka         = Channel.empty()
+    vcf_tnscope         = Channel.empty()
     vcf_tiddit          = Channel.empty()
     out_indexcov        = Channel.empty()
 
@@ -247,7 +248,6 @@ workflow BAM_VARIANT_CALLING_SOMATIC_ALL {
 
     // TNSCOPE
     if (tools.split(',').contains('sentieon_tnscope')) {
-        cram.view()
 
         BAM_VARIANT_CALLING_SOMATIC_TNSCOPE(
             // Remap channel to match module/subworkflow
