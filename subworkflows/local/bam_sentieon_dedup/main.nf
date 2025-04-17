@@ -3,6 +3,7 @@
 
 include { CRAM_QC_MOSDEPTH_SAMTOOLS } from '../cram_qc_mosdepth_samtools/main'
 include { SENTIEON_DEDUP            } from '../../../modules/nf-core/sentieon/dedup/main'
+include { FGBIO_COPYUMIFROMREADNAME } from '../../../modules/local/fgbio_copyumifromreadname/main'
 
 workflow BAM_SENTIEON_DEDUP {
     take:
@@ -16,7 +17,10 @@ workflow BAM_SENTIEON_DEDUP {
     versions = Channel.empty()
     reports  = Channel.empty()
 
-    bam = bam.map{ meta, bam -> [ meta - meta.subMap('data_type'), bam ] }
+    FGBIO_COPYUMIFROMREADNAME(bam)
+
+    bam = FGBIO_COPYUMIFROMREADNAME(bam).out.cram.map{ meta, bam -> [ meta - meta.subMap('data_type'), bam ] }
+
     bai = bai.map{ meta, bai -> [ meta - meta.subMap('data_type'), bai ] }
     bam_bai = bam.join(bai, failOnMismatch:true, failOnDuplicate:true)
     SENTIEON_DEDUP(bam_bai, fasta, fasta_fai)
