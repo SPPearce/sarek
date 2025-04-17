@@ -19,7 +19,7 @@ workflow BAM_SENTIEON_DEDUP {
 
     FGBIO_COPYUMIFROMREADNAME(bam)
 
-    bam = FGBIO_COPYUMIFROMREADNAME(bam).out.cram.map{ meta, bam -> [ meta - meta.subMap('data_type'), bam ] }
+    bam = FGBIO_COPYUMIFROMREADNAME.out.cram.map{ meta, bam -> [ meta - meta.subMap('data_type'), bam ] }
 
     bai = bai.map{ meta, bai -> [ meta - meta.subMap('data_type'), bai ] }
     bam_bai = bam.join(bai, failOnMismatch:true, failOnDuplicate:true)
