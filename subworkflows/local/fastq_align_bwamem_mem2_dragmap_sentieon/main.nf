@@ -31,17 +31,17 @@ workflow FASTQ_ALIGN_BWAMEM_MEM2_DRAGMAP_SENTIEON {
     // The sentieon-bwamem-module does sorting as part of the conversion from sam to bam.
     SENTIEON_BWAMEM(reads, index, fasta, fasta_fai) // If aligner is sentieon-bwamem
 
+    FGBIO_COPYUMIFROMREADNAME(SENTIEON_BWAMEM.out.bam_and_bai, fasta)
+
     // Get the bam files from the aligner
     // Only one aligner is run
     bam = Channel.empty()
     bam = bam.mix(BWAMEM1_MEM.out.bam)
     bam = bam.mix(BWAMEM2_MEM.out.bam)
     bam = bam.mix(DRAGMAP_ALIGN.out.bam)
-    bam = bam.mix(SENTIEON_BWAMEM.out.bam_and_bai.map{ meta, bam, bai -> [ meta, bam ] })
+    //bam = bam.mix(SENTIEON_BWAMEM.out.bam_and_bai.map{ meta, bam, bai -> [ meta, bam ] })
 
-    FGBIO_COPYUMIFROMREADNAME(bam)
-
-    bam = FGBIO_COPYUMIFROMREADNAME.out.cram
+    bam = FGBIO_COPYUMIFROMREADNAME.out.bam
 
     bai = SENTIEON_BWAMEM.out.bam_and_bai.map{ meta, bam, bai -> [ meta, bai ] }
 

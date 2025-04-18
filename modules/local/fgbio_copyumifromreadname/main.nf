@@ -8,7 +8,8 @@ process FGBIO_COPYUMIFROMREADNAME {
         'biocontainers/fgbio:2.2.1--hdfd78af_0' }"
 
     input:
-    tuple val(meta), path(bam)
+    tuple val(meta), path(bam), path(bai)
+    tuple val(meta2), path(fasta)
 
     output:
     tuple val(meta), path("*.bam") , emit: bam , optional: true
@@ -21,7 +22,7 @@ process FGBIO_COPYUMIFROMREADNAME {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def suffix = task.ext.suffix ?: "cram"
+    def suffix = task.ext.suffix ?: "bam"
     def mem_gb = 8
     if (!task.memory) {
         log.info '[fgbio FastqToBam] Available memory not known - defaulting to 8GB. Specify process memory requirements to change this.'
@@ -52,7 +53,7 @@ process FGBIO_COPYUMIFROMREADNAME {
     stub:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def suffix = task.ext.suffix ?: "cram"
+    def suffix = task.ext.suffix ?: "bam"
 
     """
     touch ${prefix}.${suffix}
