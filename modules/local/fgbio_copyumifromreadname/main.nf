@@ -22,7 +22,16 @@ process FGBIO_COPYUMIFROMREADNAME {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def suffix = task.ext.suffix ?: "cram"
-
+    def mem_gb = 8
+    if (!task.memory) {
+        log.info '[fgbio FastqToBam] Available memory not known - defaulting to 8GB. Specify process memory requirements to change this.'
+    } else if (mem_gb > task.memory.giga) {
+        if (task.memory.giga < 2) {
+            mem_gb = 1
+        } else {
+            mem_gb = task.memory.giga - 1
+        }
+    }
     """
     fgbio \\
         -Xmx${mem_gb}g \\
