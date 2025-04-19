@@ -12,8 +12,7 @@ process FGBIO_COPYUMIFROMREADNAME {
     tuple val(meta2), path(fasta)
 
     output:
-    tuple val(meta), path("*.bam") , emit: bam , optional: true
-    tuple val(meta), path("*.cram"), emit: cram, optional: true
+    tuple val(meta), path("*.bam") ,  path("*.bai"), emit: bam_bai , optional: true
     path "versions.yml"            , emit: versions
 
     when:
@@ -21,7 +20,7 @@ process FGBIO_COPYUMIFROMREADNAME {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}_umi_extracted"
     def suffix = task.ext.suffix ?: "bam"
     def mem_gb = 8
     if (!task.memory) {
