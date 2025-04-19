@@ -12,7 +12,7 @@ process FGBIO_COPYUMIFROMREADNAME {
     tuple val(meta2), path(fasta)
 
     output:
-    tuple val(meta), path("*.bam") ,  path("*.bai"), emit: bam_bai , optional: true
+    tuple val(meta), path("*.bam") ,  path("*.bai"), emit: bam_and_bai , optional: true
     path "versions.yml"            , emit: versions
 
     when:
