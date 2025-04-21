@@ -45,10 +45,10 @@ workflow BAM_VARIANT_CALLING_SOMATIC_TNSCOPE {
         input_intervals,
         fasta, 
         fai, 
-        [], //germline_resource,
-        [], //germline_resource_tbi,
-        [], //panel_of_normals,
-        [], //panel_of_normals_tbi,
+        germline_resource,
+        germline_resource_tbi,
+        panel_of_normals,
+        panel_of_normals_tbi,
         [], //cosmic
         [] // cosmic_tbi
     )
